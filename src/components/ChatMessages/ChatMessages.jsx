@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IoMdSend } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import {
   createChannelMessage,
   deleteMessage,
@@ -12,6 +12,7 @@ import { useChat } from "../../pages/Chat";
 import { Loading } from "../../constant/icons";
 import Messages from "./Messages";
 import ChatActions from "./ChatActions";
+import { authError } from "../../helper";
 
 const ChatMessages = () => {
   const {
@@ -29,6 +30,8 @@ const ChatMessages = () => {
   const [editMessage, setEditMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [noMoreFetch, setNoMoreFetch] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedUser) {
@@ -83,7 +86,7 @@ const ChatMessages = () => {
       if (!messagesData?.length) {
         setSkip(0);
       }
-      const response = await getMessages(user, selectedUser, {
+      const response = await getMessages(selectedUser, {
         limit: 10,
         skip,
       });
@@ -139,7 +142,7 @@ const ChatMessages = () => {
       if (!message) return;
       const data = {
         receiverId: selectedUser, //reciver id
-        senderId: user, // userId
+        senderId: user?._id, // userId
         content: message,
       };
       const response = await sendMessage(data);
@@ -147,6 +150,7 @@ const ChatMessages = () => {
       setMessagesData((prevMessages) => [...prevMessages, response.data]);
       setMessage("");
     } catch (error) {
+      authError(error, navigate);
       console.log(error);
     }
   };
@@ -158,7 +162,7 @@ const ChatMessages = () => {
         const data = {
           chatRoom: selectedChannel,
           type: "text",
-          sender: user,
+          sender: user?._id,
           content: message,
         };
         const response = await createChannelMessage(data);
@@ -168,6 +172,7 @@ const ChatMessages = () => {
         ]);
         setMessage("");
       } catch (error) {
+        authError(error, navigate);
         console.log(error);
       }
     }
@@ -187,6 +192,7 @@ const ChatMessages = () => {
       dupMessages[messageIndex].content = message;
       setMessagesData(dupMessages);
     } catch (error) {
+      authError(error, navigate);
       console.log(error);
     }
   };
@@ -198,6 +204,7 @@ const ChatMessages = () => {
       const messages = messagesData?.filter((x) => x?._id != id);
       setMessagesData(messages);
     } catch (error) {
+      authError(error, navigate);
       console.log(error);
     }
   };
@@ -229,7 +236,12 @@ const ChatMessages = () => {
             <p className="font-medium text-sm text-[#495057]">
               Channel # {selectedChannel}
             </p>
-            <button type="button" className="text-[#6153cc] font-medium w-max text-sm">Add Members</button>
+            <button
+              type="button"
+              className="text-[#6153cc] font-medium w-max text-sm"
+            >
+              Add Members
+            </button>
           </div>
         )}
       </div>

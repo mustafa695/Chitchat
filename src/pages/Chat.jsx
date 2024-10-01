@@ -15,7 +15,10 @@ export const useChat = () => {
 const Chat = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedChannel, setSelectedChannel] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user] = useState(() => {
+    // Initialize state from localStorage
+    return JSON.parse(localStorage.getItem("userData")) || null;
+  });
   const [onlineUsers, setOnlineUsers] = useState(null);
   const [chatUserData, setChatUserData] = useState(null);
 
@@ -31,7 +34,7 @@ const Chat = () => {
       });
 
       // Register the user
-      socket.emit("register", user);
+      socket.emit("register", user?._id);
 
       // Listen for incoming messages
       socket.on("newMessage", (message) => {
@@ -105,24 +108,13 @@ const Chat = () => {
         setActiveSideMenu,
       }}
     >
-      {user ? (
-        <div className="flex">
-          <Sidebar />
+      <div className="flex">
+        <Sidebar />
 
-          <ChatList />
+        <ChatList />
 
-          <ChatMessages />
-        </div>
-      ) : (
-        <div className="flex flex-col gap-4 py-6">
-          <p className="text-3xl">Choose user</p>
-          {userData.map((user) => (
-            <button key={user._id} onClick={() => setUser(user._id)}>
-              {user.name}
-            </button>
-          ))}
-        </div>
-      )}
+        <ChatMessages />
+      </div>
     </ChatContext.Provider>
   );
 };

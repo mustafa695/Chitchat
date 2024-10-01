@@ -49,7 +49,7 @@ const Messages = ({ loading, handleDeleteMessage, handleEditMessage }) => {
     <div className="flex flex-col gap-8 p-6 flex-1">
       {messagesData.length
         ? messagesData?.map((item) =>
-            (item?.sender?._id || item?.sender) != user ? (
+            (item?.sender?._id || item?.sender) != user?._id ? (
               //   ===== Reciver End Message ====
               <div
                 className={`flex items-end gap-2 w-3/4 ${
