@@ -11,6 +11,8 @@ const AddChannelModal = ({ isOpen, onClose, handleSuccess }) => {
 
   const { setChannelData } = useChat();
 
+  const user = JSON.parse(localStorage.getItem("userData")) || null;
+
   if (!isOpen) return null;
 
   const handleCreateChannel = async () => {
@@ -18,7 +20,7 @@ const AddChannelModal = ({ isOpen, onClose, handleSuccess }) => {
       setLoading(true);
       const data = {
         name,
-        users: ["66f586515255d9a8e8b8ff13"],
+        users: [user?._id],
       };
       const response = await createChannel(data);
       setChannelData(response.data?.data);
