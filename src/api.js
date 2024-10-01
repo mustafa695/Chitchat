@@ -4,14 +4,12 @@ const endpoint = "https://chitchat-server-nine.vercel.app/api";
 
 export const login = (data) => {
   return axios.post(`${endpoint}/auth/login`, data, {
-    cache: "no-store",
     withCredentials: true,
   });
 };
 
 export const logout = (data) => {
   return axios.post(`${endpoint}/auth/logout`, data, {
-    cache: "no-store",
     withCredentials: true,
   });
 };
