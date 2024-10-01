@@ -1,16 +1,21 @@
 import React, { Fragment, useState } from "react";
-import { ChatLogo } from "../constant/icons";
+import { ChatLogo, Loading } from "../constant/icons";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BiChat } from "react-icons/bi";
 import { useChat } from "../pages/Chat";
 import { RiContactsLine, RiLogoutCircleLine } from "react-icons/ri";
 import { MdOutlineBookmarks } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
+import { logout } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const { setActiveSideMenu, activeSideMenu } = useChat();
 
   const [openProfile, setOpenProfile] = useState(false);
+  const [loader, setLoader] = useState(false);
+
+  const navigate = useNavigate()
 
   const menuItems = [
     {
@@ -49,6 +54,19 @@ const Sidebar = () => {
       icon: <RiLogoutCircleLine size={15} color="#495057bf" />,
     },
   ];
+
+  const handleLogout = async () => {
+    try {
+      setLoader(true);
+      await logout();
+      localStorage.removeItem("userData");
+      navigate('/')
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
+  };
   return (
     <div className="bg-[#2e2e2e] h-full min-h-lvh min-w-20 max-w-20 flex flex-col">
       <div className="flex flex-col gap-4 py-2 flex-1">
@@ -82,8 +100,14 @@ const Sidebar = () => {
               <div className="absolute -top-36 -left-4 w-full bg-white shadow-md drop-shadow-md px-4 min-w-40 py-2">
                 {menuActions.map((item, index) => (
                   <Fragment key={index}>
-                    <button className="text-[#495057] capitalize font-medium text-sm flex items-center gap-2 justify-between w-full py-2">
-                      {item.title} {item.icon}
+                    <button
+                      onClick={() => {
+                        item.title === "logout" && handleLogout();
+                      }}
+                      className="text-[#495057] capitalize font-medium text-sm flex items-center gap-2 justify-between w-full py-2"
+                    >
+                      {loader && <Loading className="!size-4 me-1" />} {item.title}{" "}
+                      {item.icon}
                     </button>
                     {index === 1 && (
                       <hr className="border-b border-b-[#eaeaf1] my-2" />
