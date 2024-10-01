@@ -12,10 +12,12 @@ import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
   const { setActiveSideMenu, activeSideMenu } = useChat();
 
+  const user = JSON.parse(localStorage.getItem("userData")) || null;
+
   const [openProfile, setOpenProfile] = useState(false);
   const [loader, setLoader] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -60,7 +62,7 @@ const Sidebar = () => {
       setLoader(true);
       await logout();
       localStorage.removeItem("userData");
-      navigate('/')
+      navigate("/");
     } catch (error) {
       console.log(error);
     } finally {
@@ -91,7 +93,7 @@ const Sidebar = () => {
           <div className="relative">
             <button type="button" onClick={() => setOpenProfile(!openProfile)}>
               <img
-                src="https://themesbrand.com/doot/layouts/assets/images/users/avatar-3.jpg"
+                src={user?.profileImage}
                 alt="profileImage"
                 className="size-9 rounded-full border-2 border-white"
               />
@@ -106,8 +108,10 @@ const Sidebar = () => {
                       }}
                       className="text-[#495057] capitalize font-medium text-sm flex items-center gap-2 justify-between w-full py-2"
                     >
-                      {loader && <Loading className="!size-4 me-1" />} {item.title}{" "}
-                      {item.icon}
+                      {item.title === "logout" && loader && (
+                        <Loading className="!size-4 me-1" />
+                      )}{" "}
+                      {item.title} {item.icon}
                     </button>
                     {index === 1 && (
                       <hr className="border-b border-b-[#eaeaf1] my-2" />
