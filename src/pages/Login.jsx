@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import Input from "../components/Input";
 import { MdOutlineLock, MdOutlineMailOutline } from "react-icons/md";
@@ -13,14 +13,22 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userData")) || null;
+    if (user) {
+      navigate("/chat");
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await login({
+      const response = await login({
         email,
         password,
       });
+      localStorage.setItem("userData", JSON.stringify(response.data?.data));
       navigate("/chat");
     } catch (error) {
       if (error?.response?.data?.message) {
@@ -33,13 +41,13 @@ const Login = () => {
   };
   return (
     <div className="bg-[#f7f7ff] h-lvh">
-      <div className="w-4/5 mx-auto flex items-center justify-center flex-col h-full">
+      <div className="md:w-4/5 w-full mx-auto flex items-center justify-center flex-col h-full">
         <Logo />
         <div className="mt-12">
-          <h3 className="text-[#343a40] font-medium text-xl text-center">
+          <h3 className="text-[#343a40] font-medium sm:text-xl text-lg text-center">
             Sign in
           </h3>
-          <p className="text-[#7a7f9a] text-sm pt-1 text-center mb-4">
+          <p className="text-[#7a7f9a] text-sm sm:text-xs pt-1 text-center mb-4">
             Sign in to continue to Chitchat.
           </p>
         </div>
@@ -68,18 +76,18 @@ const Login = () => {
             />
           </div>
           <div className="flex justify-end mt-1">
-            <Link to={"/signup"} className="text-sm text-[#7a7f9a]">
+            <Link to={"/signup"} className="sm:text-sm text-xs text-[#7a7f9a]">
               Forgot password?
             </Link>
           </div>
           <button
             type="submit"
-            className="bg-[#7269ef] text-white w-full py-2.5 px-4 rounded-md mt-10"
+            className="bg-[#7269ef] text-white w-full sm:py-2.5 py-2 sm:text-base text-xs px-4 rounded-md mt-10"
           >
-            {loading && <Loading className={"!size-4"}/>} Sign in
+            {loading && <Loading className={"!size-4"} />} Sign in
           </button>
         </form>
-        <p className="text-[#495059] text-sm mt-4">
+        <p className="text-[#495059] sm:text-sm text-xs mt-4">
           Don't have an account ?{" "}
           <Link to={"/signup"} className="text-[#7269ef]">
             Signup now

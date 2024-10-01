@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LuUser2 } from "react-icons/lu";
 import { MdOutlineLock, MdOutlineMailOutline } from "react-icons/md";
@@ -15,6 +15,13 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userData")) || null;
+    if (user) {
+      navigate("/chat");
+    }
+  }, []);
 
   const handleRegsiter = async (e) => {
     e.preventDefault();
@@ -40,13 +47,13 @@ const Register = () => {
 
   return (
     <div className="bg-[#f7f7ff] h-lvh pt-4">
-      <div className="w-4/5 mx-auto flex items-center justify-center flex-col h-full">
+      <div className="sm:w-4/5 w-full mx-auto flex items-center justify-center flex-col h-full">
         <Logo />
         <div className="mt-12">
-          <h3 className="text-[#343a40] font-medium text-xl text-center">
+          <h3 className="text-[#343a40] font-medium sm:text-xl text-lg text-center">
             Register
           </h3>
-          <p className="text-[#7a7f9a] text-sm pt-1 text-center mb-4">
+          <p className="text-[#7a7f9a] sm:text-sm text-xs pt-1 text-center mb-4">
             Get your Chitchat account now.
           </p>
         </div>
@@ -86,13 +93,13 @@ const Register = () => {
 
           <button
             type="submit"
-            className="bg-[#7269ef] text-white w-full py-2.5 px-4 rounded-md mt-10"
+            className="bg-[#7269ef] text-white w-full sm:py-2.5 py-2 sm:text-sm text-xs px-4 rounded-md mt-10"
             disabled={loading}
           >
             {loading && <Loading className={"!size-4"} />} Register
           </button>
         </form>
-        <p className="text-[#495059] text-sm mt-4">
+        <p className="text-[#495059] sm:text-sm text-xs mt-4">
           Already have an account ?{" "}
           <Link to={"/"} className="text-[#7269ef] font-medium">
             Signin
