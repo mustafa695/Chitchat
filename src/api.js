@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const endpoint = "https://chitchat-server-nine.vercel.app/api";
+// const endpoint = "https://chitchat-server-nine.vercel.app/api";
+const endpoint = "https://chitchat-server-qb9e.onrender.com";
 
 export const login = (data) => {
   return axios.post(`${endpoint}/auth/login`, data, {
@@ -26,9 +27,9 @@ export const sendMessage = (data) => {
   return axios.post(`${endpoint}/chat/send`, data, { withCredentials: true });
 };
 
-export const getMessages = (userId, recieverId, params) => {
+export const getMessages = (recieverId, params) => {
   return axios.get(
-    `${endpoint}/chat/messages/${userId}/${recieverId}?limit=${params?.limit}&skip=${params?.skip}`,
+    `${endpoint}/chat/messages/${recieverId}?limit=${params?.limit}&skip=${params?.skip}`,
     {
       withCredentials: true,
     }
@@ -63,8 +64,8 @@ export const createChannelMessage = (data) => {
   });
 };
 
-export const getChannels = (userId) => {
-  return axios.get(`${endpoint}/channel?userId=${userId}`, {
+export const getChannels = () => {
+  return axios.get(`${endpoint}/channel`, {
     withCredentials: true,
   });
 };

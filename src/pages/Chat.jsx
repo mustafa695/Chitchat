@@ -4,7 +4,7 @@ import ChatList from "../components/ChatList";
 import ChatMessages from "../components/ChatMessages/ChatMessages";
 import { io } from "socket.io-client";
 
-const socket = io("https://chitchat-server-nine.vercel.app", {
+const socket = io("https://chitchat-server-qb9e.onrender.com", {
   withCredentials: true,
   transports: ["polling", "websocket"],
 });
