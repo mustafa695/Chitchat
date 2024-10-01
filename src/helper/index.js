@@ -1,3 +1,4 @@
+
 export const formatIsoDateTo12Hour = (isoDate) => {
   const date = new Date(isoDate);
   let hours = date.getHours();
@@ -6,4 +7,12 @@ export const formatIsoDateTo12Hour = (isoDate) => {
   hours = hours % 12 || 12; // Convert to 12-hour format
 
   return `${hours}:${minutes} ${ampm}`;
+};
+
+export const authError = (error, navigate) => {
+  if (error.response?.status === 401) {
+    localStorage.removeItem("userData");
+    navigate("/");
+    alert("Your session expired. Please login again");
+  }
 };
