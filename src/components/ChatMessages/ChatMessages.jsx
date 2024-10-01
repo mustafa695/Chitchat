@@ -216,7 +216,7 @@ const ChatMessages = () => {
         {!selectedChannel ? (
           <div className="flex items-end gap-4 w-full cursor-pointer">
             <img
-              src="https://themesbrand.com/doot/layouts/assets/images/users/avatar-3.jpg"
+              src={chatUserData?.profileImage}
               alt="profile"
               className="size-10 rounded-full"
             />

@@ -113,7 +113,7 @@ const ChatList = () => {
               <div className="flex items-center gap-2 w-full cursor-pointer">
                 <div className="relative">
                   <img
-                    src="https://themesbrand.com/doot/layouts/assets/images/users/avatar-3.jpg"
+                    src={item?.profileImage}
                     alt="profile"
                     className="size-7 rounded-full"
                   />

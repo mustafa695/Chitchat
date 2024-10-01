@@ -31,7 +31,7 @@ const Register = () => {
         name,
         email,
         password,
-        profileImage: "/images/av1.png",
+        profileImage: `/images/av${Math.floor(Math.random() * 20)}.png`,
       };
       const response = await addUser(data);
       navigate("/");
